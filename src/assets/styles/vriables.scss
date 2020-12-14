@@ -1,0 +1,78 @@
+//  Colors
+$brand-black: #07060b;
+$brand-green: #7a9f31;
+$brand-dk-blue: #003796;
+$brand-md-blue: #3875f0;
+$brand-lt-blue: #00b7ee;
+$brand-dk-grey: #323232;
+$brand-md-grey: #5b5b5b;
+$brand-lt-grey: #c5c5c5;
+$brand-md-white: #fafafa;
+$brand-true-white: #ffffff;
+$brand-red: #b32f2d;
+$brand-transparent: rgba(255, 255, 255, .25);
+$space-4: rem(4px);
+$space-8: rem(8px);
+$space-12: rem(12px);
+$space-16: rem(16px);
+$space-24: rem(24px);
+$space-32: rem(32px);
+$space-40: rem(40px);
+$space-48: rem(48px);
+$space-56: rem(56px);
+$space-64: rem(64px);
+// Fonts
+$header-font: "Nobel",
+sans-serif !important;
+$body-font: "Montserrat",
+sans-serif !important;
+
+// Baseline media queries
+$mq-tablet-up: "(min-width: 768px)"; // pha-blet and up
+$mq-desktop-up: "(min-width: 1024px)"; // desktop and up, including landscape tablet width
+$mq-theme-max: "(min-width: 1280px)"; // max width for primary content in the site theme
+
+// For possible fine-tuning
+$mq-desktop-xl: "(min-width: 2048px)"; // desktop xl 2048 and up
+$mq-desktop-m: "(min-width: 1600px)"; // desktop medium 1600 and up
+$mq-desktop-s: "(min-width: 1366px)"; // desktop small 1366 and up
+$mq-desktop: "(min-width: 1025px)"; // desktop and up
+$mq-tablet-range: "(min-device-width: 768px) and (max-device-width: 1024px)";
+$mq-tablet-l: "(max-width: 1024px)"; // standard tablet : landscape
+$mq-tablet-p: "(max-width: 768px)"; // standard tablet : portrait
+$mq-mobile: "(max-width: 767px)"; // easy way to target phones
+$mq-mobile-l: "(max-width: 420px)"; // larger phones (iphone+, pixel2)
+$mq-mobile-s: "(max-width: 410px)"; // baby phones (iphone SE, s5)
+
+
+@mixin media($queries...) {
+
+    @each $query in $queries {
+
+        @media only screen and #{$query} {
+            @content;
+        }
+
+    }
+
+}
+
+@mixin font-header-bold {
+    font-family: $header-font;
+    font-weight: 800;
+}
+
+@mixin font-header-reg {
+    font-family: $header-font !important;
+    font-weight: 500 !important;
+}
+
+@mixin font-body-bold {
+    font-family: $body-font !important;
+    font-weight: 800 !important;
+}
+
+@mixin font-body-reg {
+    font-family: $body-font !important;
+    font-weight: 400 !important;
+}

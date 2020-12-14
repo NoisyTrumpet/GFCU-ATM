@@ -1,18 +1,20 @@
+
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+
+import './index.scss';
 import Map from './components/Map/Map'
 import reportWebVitals from './reportWebVitals';
 
-const center = {
-  lat: 30.26,
-  lng: -97.74
-}
+
+import SA_CENTER from './constants/sa_center'
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Map title="GFCU MAP" center={center} zoom={7} />
-  </React.StrictMode>,
+  <div className="atm-app">
+    <link rel="https://cdn.rawgit.com/mfd/f3d96ec7f0e8f034cc22ea73b3797b59/raw/856f1dbb8d807aabceb80b6d4f94b464df461b3e/gotham.css"/>
+    <script src={`https://maps.googleapis.com/maps/api/js?key=AIzaSyBfEp-SAhpJNtvFz3xakgrml80FfU25I3A`} type="text/javascript"></script>
+    <Map title="GFCU ATM/Shared Branch Locator" center={SA_CENTER} zoom={11} />
+  </div>,
   document.getElementById('root')
 );
 
