@@ -2,6 +2,7 @@
   "name": "atm",
   "version": "0.1.0",
   "private": true,
+  "homepage": "./build",
   "dependencies": {
     "@progress/kendo-licensing": "^1.1.0",
     "@progress/kendo-react-form": "^4.1.0",
