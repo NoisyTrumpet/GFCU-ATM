@@ -248,7 +248,6 @@ const Map = ({ title, center, zoom }) => {
                             <option value="SC">South Carolina</option>
                             <option value="SD">South Dakota</option>
                             <option value="TN">Tennessee</option>
-
                             <option value="UT">Utah</option>
                             <option value="VT">Vermont</option>
                             <option value="VA">Virginia</option>
@@ -265,12 +264,12 @@ const Map = ({ title, center, zoom }) => {
                         ></input>
                     </section>
                     <section className="checkboxes">
-                        <div>
+                        <div className="tic">
                             <label className="toggle-switch-label" for="toggleSwitch">
                                 ATMS only? <input type="checkbox" name="locType" id="id" />
                             </label>
                         </div>
-                        <div>
+                        <div className="tic">
                             <label className="toggle-switch-label" for="toggleSwitch">
                                 Open 24hrs? <input type="checkbox" name="hr" id="id" />
                             </label>

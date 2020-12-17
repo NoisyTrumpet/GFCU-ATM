@@ -1,7 +1,17 @@
 @import "../../assets/styles/vriables.scss";
 
-.title {
+.atm-app {
+    @media screen and (max-width: 420px) {
+        width: 100%;
+        overflow-x: hidden;
+        margin: 0 auto;
+    }
+
+.title h1 {
+    font-family: 'Montserrat';
     text-align: center;
+    background-image: linear-gradient(#fff,#fff,#fff,hsla(300,2%,89%,.6),#e3e2e3);
+    margin: 0 auto;
 }
 
 .maps-wrapper {
@@ -49,6 +59,10 @@
             margin: 0 auto;
         }
 
+        .filter-results {
+            display: block;
+        }
+
         .checkboxes {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -63,6 +77,10 @@
                 align-items: center;
                 justify-content: center;
 
+                @media screen and (max-width: 420px) {
+                    justify-content: left !important;
+                }
+
                 label {
                     white-space: nowrap;
                 }
@@ -75,6 +93,13 @@
         max-width: 100%;
         width: 900px;
         height: 700px;
+
+        // @media screen and (max-width: 420px) {
+        //     max-width: 100%;
+        //     width: 400px;
+        //     height: 600px;
+        //     overflow: hidden;
+        // }
     }
 
     .results {
@@ -120,4 +145,5 @@
             }
         }
     }
+}
 }
