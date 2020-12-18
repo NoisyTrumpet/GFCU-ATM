@@ -239,7 +239,7 @@ const Map = ({ title, center, zoom }) => {
                         <Pin />
                     </div>
                 </section>
-                <h3 style={{textAlign: 'center', fontFamily: 'Gotham'}}>Click, tap or hover over pin to see details.</h3>
+                <h3 className="instruction" style={{textAlign: 'center', fontFamily: 'Gotham Book'}}>Click, tap or hover over pin to see details.</h3>
                 <ul>
                     {submitting ?
                         locations.map(() => (
