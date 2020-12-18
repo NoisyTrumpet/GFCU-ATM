@@ -8,7 +8,7 @@
     .form-wrapper {
         max-width: 900px;
         margin: 10px auto;
-        font-family: 'Montserrat';
+        font-family: 'Gotham';
         display: flex;
         flex-direction: column;
         padding: 0 10px;
@@ -36,7 +36,7 @@
 
         button {
             border-radius: 5px;
-            font-family: 'Montserrat';
+            font-family: 'Gotham Black';
             text-transform: uppercase;
             font-weight: 700;
             width: calc(100% - 10px);
@@ -47,6 +47,10 @@
             width: fit-content;
             padding: 10px 40px;
             margin: 0 auto;
+
+            @media (max-width: 500px) {
+                width: 100%;
+            }
         }
 
         .checkboxes {
@@ -57,6 +61,10 @@
             margin-bottom: 10px;
             grid-template-areas:
                 ". .";
+
+            @media (max-width: 500px) {
+                display: block !important;
+            }
 
             div {
                 display: flex;
@@ -77,9 +85,51 @@
         height: 700px;
     }
 
+    .info {
+
+        .infoShow {
+            z-index: 999999999999999999999;
+        }
+
+        &.hover {
+
+            // .infoShow {
+            //     display: block !important;
+            //     z-index: 999999999999999999999;
+            // }
+        }
+    }
+
+    .pin,
+    .alt-pin {
+        z-index: 10 !important;
+    }
+
+    .home-pin {
+        width: 40px;
+        height: 50px;
+    }
+
     .results {
+        .legend {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: 1fr;
+            gap: 0px 0px;
+            grid-template-areas:
+                ". . .";
+            .search-center, .atm, .shared-branch {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                svg {
+                    width: 25px;
+                }
+            }
+        }
+
         ul {
-            padding: 0 30px !important;
+            padding: 0 !important;
             font-family: 'Montserrat';
 
             li {
@@ -92,6 +142,17 @@
                 justify-content: space-between;
                 align-items: center;
 
+                @media (max-width: 500px) {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+
+                    .list-info {
+                        margin-bottom: 20px;
+                    }
+                }
+
                 .list-info {
                     display: flex;
                     align-items: center;
@@ -101,6 +162,7 @@
                             width: 30px;
                             height: auto;
                             margin-right: 20px;
+
                             path {
                                 box-shadow: 0 1px 1px rgba(0, 0, 0, 0.12),
                                     0 2px 2px rgba(0, 0, 0, 0.12),

@@ -1,128 +1,52 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import axios from 'axios';
 import GoogleMapReact from 'google-map-react';
-// import getLocations from '../../api.js'
 import example from '../../constants/example.js'
-// import { Form, Field } from "@progress/kendo-react-form";
-// import "@progress/kendo-theme-material/dist/all.css"; 
-import Marker from '../Marker/Marker'
 import Pin from '../../assets/svg/Pin'
+import AltPin from '../../assets/svg/AltPin'
+import HomePin from '../../assets/svg/HomePin'
 import './Map.scss'
 import Skeleton from 'react-loading-skeleton';
-
-
-
-
-
+import Marker from '../Marker/Marker.js';
 
 const Map = ({ title, center, zoom }) => {
     const wrapperClasses = classNames('maps-wrapper')
     const [locations, setLocations] = React.useState(example.response.locations)
     const [submitting, setSubmitting] = useState(false);
     const [searchCenter, setCenter] = useState({ lat: 29.4241, lng: -98.4936})
-    const [hover, setHover] = useState(false)
 
-    // // Hook
-    // function useHover() {
-    //     const [value, setValue] = useState(false);
 
-    //     const ref = useRef(null);
-
-    //     const handleMouseOver = () => setValue(true);
-    //     const handleMouseOut = () => setValue(false);
-
-    //     useEffect(
-    //         () => {
-    //             const node = ref.current;
-    //             if (node) {
-    //                 node.addEventListener('mouseover', handleMouseOver);
-    //                 node.addEventListener('mouseout', handleMouseOut);
-
-    //                 return () => {
-    //                     node.removeEventListener('mouseover', handleMouseOver);
-    //                     node.removeEventListener('mouseout', handleMouseOut);
-    //                 };
-    //             }
-    //         },
-    //         [] // Recall only if ref changes
-    //     );
-
-    //     return [ref, value];
-    // }
-
-    // InfoWindow component
-    const InfoWindow = (props) => {
-        const { place } = props;
-        const infoWindowStyle = {
-            position: 'relative',
-            bottom: 150,
-            left: '-45px',
-            width: 220,
-            backgroundColor: 'white',
-            boxShadow: '0 2px 7px 1px rgba(0, 0, 0, 0.3)',
-            padding: 10,
-            fontSize: 14,
-            zIndex: 100,
-        };
-
-        return (
-            <div style={infoWindowStyle}>
-                <div style={{ fontSize: 16 }}>
-                    {place.institutionName}
-                </div>
-                {/* <div style={{ fontSize: 14 }}>
-                    <span style={{ color: 'grey' }}>
-                        {place.rating}
-                        {' '}
-                    </span>
-                    <span style={{ color: 'orange' }}>
-                        {String.fromCharCode(9733).repeat(Math.floor(place.rating))}
-                    </span>
-                    <span style={{ color: 'lightgrey' }}>
-                        {String.fromCharCode(9733).repeat(5 - Math.floor(place.rating))}
-                    </span>
-                </div>
-                <div style={{ fontSize: 14, color: 'grey' }}>
-                    {place.types[0]}
-                </div>
-                <div style={{ fontSize: 14, color: 'grey' }}>
-                    {'$'.repeat(place.price_level)}
-                </div>
-                <div style={{ fontSize: 14, color: 'green' }}>
-                    {place.opening_hours.open_now ? 'Open' : 'Closed'}
-                </div> */}
-            </div>
-        );
-    };
-    InfoWindow.propTypes = {
-        place: PropTypes.shape({
-            institutionName: PropTypes.string,
-        }).isRequired,
-    };
 
     const MapResults = () => {
-
         return (
             <>
-            {console.log(process.env)}
                 <GoogleMapReact
                     bootstrapURLKeys={{ key: process.env.REACT_APP_MAP_API}}
                     center={searchCenter}
-                    // center={}
                     defaultZoom={zoom}
+                >   
+                <Marker
+                    lat={searchCenter.lat}
+                    lng={searchCenter.lng}
+                    home
                 >
+                        <HomePin className="home-pin" />
+                </Marker>
+
                     {locations.map((place) => (
                         <Marker
                             key={place.id}
                             text={place.institutionName}
+                            tooltip={place.id}
                             lat={place.latitude}
                             lng={place.longitude}
-                            show={true}
+                            show={place.show}
+                            title={place.id}
+                            place={place}
                         >       
-                                {/* {hover && <InfoWindow place={place} />} */}
-                                <Pin className="pin" />
+                            {place.locatorType === 'A' ? <AltPin className="alt-pin" /> : <Pin className="pin" />}                                
                         </Marker>
                     ))}
                 </GoogleMapReact>
@@ -152,6 +76,7 @@ const Map = ({ title, center, zoom }) => {
                 console.log('Response: ', response)
                 setCenter({ lat: parseFloat(response.data.response.resultInfo.originLat), lng: parseFloat(response.data.response.resultInfo.originLong)})
                 setLocations(response.data.response.locations)
+                setSubmitting(false)
             })
             .catch((error) => {
                 console.log(error)
@@ -171,26 +96,25 @@ const Map = ({ title, center, zoom }) => {
             const request = `zipcode+%7C+zip=${data.zip}&city=${data.city}&state=${data.state}&address=${data.address}&locatortype+%7C+loctype=${data.locType ? 'A' : 'AS'}${data.hr ? `&open24hours=Yes`: ''}`
 
             getLocations(request)
-            setTimeout(() => {
-                setSubmitting(false)
-            }, 1000)
         }
         return (
             <section className='form-wrapper'>
+                <span style={{ textAlign: 'left', fontFamily: 'Gotham', color: 'red', opacity: '0.3', marginBottom: '10px', fontSize: 10 }}>* Required</span>
                 <form className='form' onSubmit={handleOnSubmit}>
                     <section className="checkboxes">
+                        
                         <input
                             className='input address-input'
                             type="text"
                             name="address"
-                            placeholder="Address"
+                            placeholder="Address*"
                             required
                         ></input>
                         <input
                             className='input city-input'
                             type="text"
                             name="city"
-                            placeholder="City"
+                            placeholder="City*"
                             required
                         ></input>
                     </section>
@@ -198,11 +122,11 @@ const Map = ({ title, center, zoom }) => {
                         <select
                             name="state"
                             required
-                            placeholder="State"
+                            placeholder="State*"
                             className='input state'
                         >
                             <option value="Select" defaultValue="TX" disabled="">
-                                State
+                                State*
               </option>
                             <option value="TX">Texas</option>
                             <option value="AL">Alabama</option>
@@ -260,7 +184,7 @@ const Map = ({ title, center, zoom }) => {
                         <input
                             type="text"
                             name="zip"
-                            placeholder="Zip Code"
+                            placeholder="Zip Code*"
                             required
                         ></input>
                     </section>
@@ -298,14 +222,40 @@ const Map = ({ title, center, zoom }) => {
             </section>
             <section className="map">
                 <MapResults />
+                
             </section>
             <section className="results">
+                <section className="legend">
+                    <div className="search-center">
+                        <p>You searched for:</p>
+                        <HomePin />
+                    </div>
+                    <div className="atm">
+                        <p>ATM</p>
+                        <AltPin />
+                    </div>
+                    <div className="shared-branch">
+                        <p>ATM & Shared Branch</p>
+                        <Pin />
+                    </div>
+                </section>
+                <h3 style={{textAlign: 'center', fontFamily: 'Gotham'}}>Click, tap or hover over pin to see details.</h3>
                 <ul>
                     {submitting ?
                         locations.map(() => (
                             <li>
-                                <Skeleton />
-                                <Skeleton count={2} />
+                                <section className="list-info">
+                                    <section className="list-pin">
+                                        <Pin className="pin" />
+                                    </section>
+                                    <section className="text">
+                                        <Skeleton count={6}/>
+                                    </section>
+                                </section>
+                                <section className="list-directions">
+                                    <p><b>Distance:</b> <Skeleton /> miles away</p>
+                                    <Skeleton />
+                                </section>
                             </li>
                         ))
                         :
@@ -313,7 +263,7 @@ const Map = ({ title, center, zoom }) => {
                             <li>
                                 <section className="list-info">
                                     <section className="list-pin">
-                                        <Pin />
+                                        {place.locatorType === 'A' ? <AltPin className="alt-pin" /> : <Pin className="pin" />}
                                     </section>
                                     <section className="text">
                                         <h5>{place.institutionName}</h5>
@@ -328,7 +278,6 @@ const Map = ({ title, center, zoom }) => {
                                     <a href={`https://google.com/maps/place/${place.address},+${place.city},+${place.state}+${place.zip}`}>
                                         Directions
                                     </a>
-                                    
                                 </section>
                             </li>
                         ))
