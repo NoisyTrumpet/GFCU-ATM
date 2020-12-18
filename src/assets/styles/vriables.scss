@@ -1,12 +1,19 @@
+@font-face {
+    font-family: "YoungSerif";
+    src: url("../fonts/YoungSerif-Regular.otf");
+}
+
+@font-face {
+    font-family:"Gotham Book", sans-serif;
+    src: url("../fonts/Gotham-Book-Regular.otf");
+}
+
 //  Colors
-$brand-black: #07060b;
-$brand-green: #7a9f31;
-$brand-dk-blue: #003796;
-$brand-md-blue: #3875f0;
-$brand-lt-blue: #00b7ee;
-$brand-dk-grey: #323232;
-$brand-md-grey: #5b5b5b;
-$brand-lt-grey: #c5c5c5;
+$brand-black:#333334;
+$brand-green: #3b7728;
+$brand-orange: #df711f;
+$brand-lt-grey: #ebebeb;
+$brand-dk-grey: #666568;
 $brand-md-white: #fafafa;
 $brand-true-white: #ffffff;
 $brand-red: #b32f2d;
@@ -22,10 +29,10 @@ $space-48: rem(48px);
 $space-56: rem(56px);
 $space-64: rem(64px);
 // Fonts
-$header-font: "Nobel",
+$header-font: "Gotham",
 sans-serif !important;
-$body-font: "Montserrat",
-sans-serif !important;
+$body-font: "YoungSerif",
+serif !important;
 
 // Baseline media queries
 $mq-tablet-up: "(min-width: 768px)"; // pha-blet and up
