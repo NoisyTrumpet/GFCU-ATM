@@ -2,10 +2,10 @@
 
 .title {
     text-align: center;
-    
+
     h1 {
         font-family: 'YoungSerif', serif !important;
-        background-image: linear-gradient(#fff,#fff,#fff,hsla(300,2%,89%,.6),#e3e2e3);
+        background-image: linear-gradient(#fff, #fff, #fff, hsla(300, 2%, 89%, .6), #e3e2e3);
         padding: 1px 5px;
         margin: 5px auto;
         color: $brand-dk-grey;
@@ -70,7 +70,7 @@ h3.instruction {
             -webkit-appearance: none;
             border: 2px solid transparent;
             border-radius: 2px;
-            transition: background-color .25s ease-out,color .25s ease-out;
+            transition: background-color .25s ease-out, color .25s ease-out;
             line-height: 1;
             text-align: center;
             text-transform: uppercase;
@@ -96,8 +96,9 @@ h3.instruction {
             margin-bottom: 10px;
             grid-template-areas:
                 ". .";
-            
-            input, select {
+
+            input,
+            select {
                 background-color: #eee;
                 border: 1px solid #eee;
             }
@@ -161,6 +162,9 @@ h3.instruction {
     }
 
     .results {
+        max-width: 900px;
+        margin: 0 auto;
+
         .legend {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
@@ -181,17 +185,21 @@ h3.instruction {
                 gap: 5px 5px;
             }
 
-            .search-center, .atm, .shared-branch {
+            .search-center,
+            .atm,
+            .shared-branch {
                 display: flex;
                 justify-content: center;
                 align-items: center;
+
                 svg {
                     width: 25px;
                     padding: 5px;
                 }
+
                 p {
                     font-family: 'Gotham Book', sans-serif;
-                    
+
                     @media (max-width: 500px) {
                         font-size: 14px;
                         margin-left: 10px;
@@ -209,7 +217,7 @@ h3.instruction {
                 width: 100%;
                 padding: 20px 0 0;
                 margin: 20px 0;
-                border-top: 3px solid black;
+                border-top: 3px solid lightgray;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
@@ -217,8 +225,8 @@ h3.instruction {
                 @media (max-width: 500px) {
                     display: flex;
                     flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
+                    align-items: flex-start !important;
+
 
                     .list-info {
                         margin-bottom: 20px;
@@ -229,6 +237,7 @@ h3.instruction {
                     display: flex;
                     align-items: center;
                     font-family: 'Gotham Book', sans-serif !important;
+                    margin-left: 20px;
 
                     .list-pin {
                         svg {
@@ -265,7 +274,10 @@ h3.instruction {
                 }
 
                 .list-directions {
-                    p, a {
+                    margin-left: 20px;
+
+                    p,
+                    a {
                         @media (max-width: 500px) {
                             font-size: 14px;
                         }
