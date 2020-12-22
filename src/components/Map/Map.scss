@@ -101,6 +101,7 @@ h3.instruction {
             select {
                 background-color: #eee;
                 border: 1px solid #eee;
+                font-family: 'Gotham Book', sans-serif !important;
             }
 
             @media (max-width: 500px) {
@@ -173,16 +174,11 @@ h3.instruction {
             grid-template-areas:
                 ". . .";
 
+            // text-align: left;
+            // margin-left: 1rem;
+
             @media (max-width: 500px) {
-                // grid-template-columns: 1fr;
-                // grid-template-rows: 1fr 1fr 1fr;
-                // grid-template-areas: 
-                // " . "
-                // " . "
-                // " . ";
-                // text-align: left;
-                // margin-left: 0;
-                gap: 5px 5px;
+                // gap: 5px 5px;
             }
 
             .search-center,
@@ -211,6 +207,7 @@ h3.instruction {
         ul {
             padding: 0 !important;
             font-family: 'Gotham Book', sans-serif;
+            text-transform: capitalize !important;
 
             li {
                 list-style: none;
@@ -223,13 +220,26 @@ h3.instruction {
                 align-items: center;
 
                 @media (max-width: 500px) {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: flex-start !important;
-
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    grid-template-rows: 1fr;
+                    gap: 0px 0px;
+                    grid-template-areas:
+                        ". .";
 
                     .list-info {
-                        margin-bottom: 20px;
+                        margin-top: 5px;
+
+                        .list-pin {
+                            svg {
+                                width: 20px !important;
+                                height: auto;
+                            }
+                        }
+                    }
+
+                    .list-direction {
+                        margin-top: 5px;
                     }
                 }
 
@@ -238,6 +248,7 @@ h3.instruction {
                     align-items: center;
                     font-family: 'Gotham Book', sans-serif !important;
                     margin-left: 20px;
+                    text-transform: capitalize !important;
 
                     .list-pin {
                         svg {
@@ -275,6 +286,7 @@ h3.instruction {
 
                 .list-directions {
                     margin-left: 20px;
+                    text-transform: capitalize !important;
 
                     p,
                     a {
