@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import axios from 'axios';
 import GoogleMapReact from 'google-map-react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import example from '../../constants/example.js'
 import Pin from '../../assets/svg/Pin'
 import AltPin from '../../assets/svg/AltPin'
@@ -15,25 +17,27 @@ const Map = ({ title, center, zoom }) => {
     const wrapperClasses = classNames('maps-wrapper')
     const [locations, setLocations] = React.useState(example.response.locations)
     const [submitting, setSubmitting] = useState(false);
-    const [searchCenter, setCenter] = useState({ lat: 29.4241, lng: -98.4936})
+    const [response, setResponse] = useState({})
+    const [submitted, setSubmitted] = useState(false)
+    const [searchCenter, setCenter] = useState({ lat: 29.4241, lng: -98.4936 })
 
-
+    const notify = () => toast("Ooops! We've encountered an error, please try again!");
 
     const MapResults = () => {
         return (
             <>
                 <GoogleMapReact
-                    bootstrapURLKeys={{ key: process.env.REACT_APP_MAP_API}}
+                    bootstrapURLKeys={{ key: process.env.REACT_APP_MAP_API }}
                     center={searchCenter}
                     defaultZoom={zoom}
-                >   
-                <Marker
-                    lat={searchCenter.lat}
-                    lng={searchCenter.lng}
-                    home
                 >
+                    <Marker
+                        lat={searchCenter.lat}
+                        lng={searchCenter.lng}
+                        home
+                    >
                         <HomePin className="home-pin" />
-                </Marker>
+                    </Marker>
 
                     {locations.map((place) => (
                         <Marker
@@ -45,8 +49,8 @@ const Map = ({ title, center, zoom }) => {
                             show={place.show}
                             title={place.id}
                             place={place}
-                        >       
-                            {place.locatorType === 'A' ? <AltPin className="alt-pin" /> : <Pin className="pin" />}                                
+                        >
+                            {place.locatorType === 'A' ? <AltPin className="alt-pin" /> : <Pin className="pin" />}
                         </Marker>
                     ))}
                 </GoogleMapReact>
@@ -56,7 +60,7 @@ const Map = ({ title, center, zoom }) => {
 
 
 
-    const getLocations = async ( request ) => {
+    const getLocations = async (request) => {
         setSubmitting(true)
         const proxy = 'https://cors-anywhere.herokuapp.com/'
 
@@ -74,13 +78,31 @@ const Map = ({ title, center, zoom }) => {
         return axios.get(url, options)
             .then((response) => {
                 console.log('Response: ', response)
-                setCenter({ lat: parseFloat(response.data.response.resultInfo.originLat), lng: parseFloat(response.data.response.resultInfo.originLong)})
+                setCenter({ lat: parseFloat(response.data.response.resultInfo.originLat), lng: parseFloat(response.data.response.resultInfo.originLong) })
                 setLocations(response.data.response.locations)
                 setSubmitting(false)
+                setResponse(response.data)
+                setSubmitted(true)
             })
             .catch((error) => {
                 console.log(error)
+                notify()
+                setSubmitting(false)
+                setSubmitted(true)
             });
+    }
+
+    const Submission = () => {
+        if (response === {}) {
+            return null
+        } else {
+            return (
+                <section className="searched-for">
+                    <p>You Searched for: {response.response.resultInfo.originAddress}, {response.response.resultInfo.originCity} {response.response.resultInfo.originState}</p>
+                    <p>{response.response.resultInfo.recordsAvailable} results found</p>
+                </section>
+            )
+        }
     }
 
 
@@ -93,7 +115,7 @@ const Map = ({ title, center, zoom }) => {
             for (let [key, value] of form.entries()) {
                 data[key] = value
             }
-            const request = `zipcode+%7C+zip=${data.zip}&city=${data.city}&state=${data.state}&address=${data.address}&locatortype+%7C+loctype=${data.locType ? 'A' : 'AS'}${data.hr ? `&open24hours=Yes`: ''}`
+            const request = `zipcode+%7C+zip=${data.zip}&city=${data.city}&state=${data.state}&address=${data.address}&locatortype+%7C+loctype=${data.locType ? 'A' : 'AS'}${data.hr ? `&open24hours=Yes` : ''}`
 
             getLocations(request)
         }
@@ -102,7 +124,7 @@ const Map = ({ title, center, zoom }) => {
                 <span style={{ textAlign: 'left', fontFamily: 'Gotham', color: 'red', opacity: '0.3', marginBottom: '10px', fontSize: 10 }}>* Required</span>
                 <form className='form' onSubmit={handleOnSubmit}>
                     <section className="checkboxes">
-                        
+
                         <input
                             className='input address-input'
                             type="text"
@@ -207,6 +229,7 @@ const Map = ({ title, center, zoom }) => {
                         {submitting ? 'Locating...🤔' : 'Submit'}
                     </button>
                 </form>
+                {submitted && <Submission />}
             </section>
         )
     }
@@ -222,7 +245,7 @@ const Map = ({ title, center, zoom }) => {
             </section>
             <section className="map">
                 <MapResults />
-                
+
             </section>
             <section className="results">
                 <section className="legend">
@@ -239,7 +262,7 @@ const Map = ({ title, center, zoom }) => {
                         <Pin />
                     </div>
                 </section>
-                <h3 className="instruction" style={{textAlign: 'center', fontFamily: 'Gotham Book'}}>Click, tap or hover over pin to see details.</h3>
+                <h3 className="instruction" style={{ textAlign: 'center', fontFamily: 'Gotham Book' }}>Click, tap or hover over pin to see details.</h3>
                 <ul>
                     {submitting ?
                         locations.map(() => (
@@ -249,7 +272,10 @@ const Map = ({ title, center, zoom }) => {
                                         <Pin className="pin" />
                                     </section>
                                     <section className="text">
-                                        <Skeleton count={6}/>
+                                        <Skeleton />
+                                        <Skeleton />
+                                        <Skeleton />
+                                        <Skeleton />
                                     </section>
                                 </section>
                                 <section className="list-directions">
@@ -284,6 +310,17 @@ const Map = ({ title, center, zoom }) => {
                     }
                 </ul>
             </section>
+            <ToastContainer
+                position="top-center"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
         </section>
     )
 }
