@@ -11,6 +11,7 @@ import AltPin from '../../assets/svg/AltPin'
 import HomePin from '../../assets/svg/HomePin'
 import './Map.scss'
 import Skeleton from 'react-loading-skeleton';
+import { Animated } from "react-animated-css";
 import Marker from '../Marker/Marker.js';
 
 const Map = ({ title, center, zoom }) => {
@@ -31,13 +32,17 @@ const Map = ({ title, center, zoom }) => {
                     center={searchCenter}
                     defaultZoom={zoom}
                 >
-                    <Marker
-                        lat={searchCenter.lat}
-                        lng={searchCenter.lng}
-                        home
-                    >
-                        <HomePin className="home-pin" />
-                    </Marker>
+                    
+                        <Marker
+                            lat={searchCenter.lat}
+                            lng={searchCenter.lng}
+                            home
+                        >
+                            <Animated animationIn="fadeInDownBig" animationOut="fadeOut" isVisible={true}>
+                                <HomePin className="home-pin" />
+                            </Animated>
+                                
+                        </Marker>
 
                     {locations.map((place) => (
                         <Marker
@@ -50,7 +55,17 @@ const Map = ({ title, center, zoom }) => {
                             title={place.id}
                             place={place}
                         >
-                            {place.locatorType === 'A' ? <AltPin className="alt-pin" /> : <Pin className="pin" />}
+                            {place.locatorType === 'A' ? 
+                            <Animated animationIn="bounce" animationOut="fadeOut" isVisible={true}>
+                                <AltPin className="alt-pin" />
+                            </Animated>
+                                 
+                                : 
+                                <Animated animationIn="bounce" animationOut="fadeOut" isVisible={true}>
+                                    <Pin className="pin" />
+                            </Animated>
+                                
+                            }
                         </Marker>
                     ))}
                 </GoogleMapReact>
@@ -98,7 +113,7 @@ const Map = ({ title, center, zoom }) => {
         } else {
             return (
                 <section className="searched-for">
-                    <p>You Searched for: {response.response.resultInfo.originAddress}, {response.response.resultInfo.originCity} {response.response.resultInfo.originState}</p>
+                    <p>You Searched for: {response.response.resultInfo.originAddress ? response.response.resultInfo.originAddress : response.response.resultInfo.originPostal}, {response.response.resultInfo.originCity && response.response.resultInfo.originCity} {response.response.resultInfo.originState && response.response.resultInfo.originState}</p>
                     <p>{response.response.resultInfo.recordsAvailable} results found</p>
                 </section>
             )
@@ -115,13 +130,35 @@ const Map = ({ title, center, zoom }) => {
             for (let [key, value] of form.entries()) {
                 data[key] = value
             }
-            const request = `zipcode+%7C+zip=${data.zip}&city=${data.city}&state=${data.state}&address=${data.address}&locatortype+%7C+loctype=${data.locType ? 'A' : 'AS'}${data.hr ? `&open24hours=Yes` : ''}`
+
+            const cityCheck = () => {
+                if (data.city) {
+                    return `&city=${data.city}`
+                }
+                return ''
+            }
+            const stateCheck = () => {
+                if (data.state && data.state !== 'Select') {
+                    return `&state=${data.state}`
+                }
+                return ''
+            }
+
+            const addressCheck = () => {
+                if (data.address) {
+                    return `&address=${data.address}`
+                }
+                return ''
+            }
+
+
+            const request = `ZipCode=${data.zip}${cityCheck()}${stateCheck()}${addressCheck()}${`&locatortype=${data.locType === 'on' ? 'A' : 'AS'}`}${data.hr === 'on' ? `&open24hours=Yes` : ''}`
 
             getLocations(request)
         }
         return (
             <section className='form-wrapper'>
-                <span style={{ textAlign: 'left', fontFamily: 'Gotham', color: 'red', opacity: '0.3', marginBottom: '10px', fontSize: 10 }}>* Required</span>
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"></link>
                 <form className='form' onSubmit={handleOnSubmit}>
                     <section className="checkboxes">
 
@@ -129,26 +166,23 @@ const Map = ({ title, center, zoom }) => {
                             className='input address-input'
                             type="text"
                             name="address"
-                            placeholder="Address*"
-                            required
+                            placeholder="Address"
                         ></input>
                         <input
                             className='input city-input'
                             type="text"
                             name="city"
-                            placeholder="City*"
-                            required
+                            placeholder="City"
                         ></input>
                     </section>
                     <section className="checkboxes">
                         <select
                             name="state"
-                            required
-                            placeholder="State*"
+                            placeholder="State"
                             className='input state'
                         >
                             <option value="Select" defaultValue="TX" disabled="">
-                                State*
+                                State
               </option>
                             <option value="TX">Texas</option>
                             <option value="AL">Alabama</option>
@@ -236,9 +270,14 @@ const Map = ({ title, center, zoom }) => {
     return (
         <section className={wrapperClasses}>
             <section className="title">
-                <h1>
+                <Animated animationIn="fadeIn" animationOut="fadeOut" isVisible={true}>
+                    <h1>
                     {title}
                 </h1>
+                </Animated>
+                <p>In addition to our main GFCU branches and ATMs, we are also part of the <a href="https://co-opcreditunions.org/locator/?ref=co-opsharedbranch.org&sc=1" target="_blank" rel="noreferrer">CO-OP Shared Branching Network</a>, <a href="https://co-opcreditunions.org/locator/?ref=co-opatm.org&sc=1" target="_blank" rel="noreferrer">CO-OP ATM Network</a> and <a href="http://www.dolphindebit.com/our-network/" target="_blank" rel="noreferrer">Dolphin Debit ATM Network</a>, giving our members access to more than 5,000 shared credit union locations and nearly 30,000 ATMs nationwide.</p>
+                <p><span style={{ textAlign: 'left', fontFamily: 'Gotham', color: 'red', opacity: '0.3', marginBottom: '10px', fontSize: 10 }}>* Required</span></p>
+                <p>Search by zip, or full address.</p>
             </section>
             <section className="form">
                 <Form />
