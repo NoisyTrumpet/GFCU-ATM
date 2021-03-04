@@ -77,7 +77,7 @@ const Map = ({ title, center, zoom }) => {
 
     const getLocations = async (request) => {
         setSubmitting(true)
-        const proxy = 'https://cors-anywhere.herokuapp.com/'
+        const proxy = 'https://cors.bridged.cc/'
 
         const url = `${proxy}https://api.coop.org/locator/v1/proximitysearch?${request}`;
 
