@@ -99,6 +99,7 @@ const Marker = ({ text, children, show, place, tooltip, $hover, home }) => {
             <Wrapper
                 alt={text}
                 onClick={handleClick}
+                center={place}
             >
                 {click && <InfoWindow place={place} />}
                 {$hover && <InfoWindow place={place} />}
