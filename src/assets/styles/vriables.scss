@@ -1,15 +1,15 @@
 @font-face {
-    font-family: "YoungSerif";
-    src: url("../fonts/YoungSerif-Regular.otf");
+  font-family: "YoungSerif";
+  src: url("../fonts/YoungSerif-Regular.otf");
 }
 
 @font-face {
-    font-family:"Gotham Book", sans-serif;
-    src: url("../fonts/Gotham-Book-Regular.otf")
+  font-family: "Gotham Book", sans-serif;
+  src: url("../fonts/Gotham-Book-Regular.otf");
 }
 
 //  Colors
-$brand-black:#333334;
+$brand-black: #333334;
 $brand-green: #3b7728;
 $brand-orange: #df711f;
 $brand-lt-grey: #ebebeb;
@@ -17,7 +17,7 @@ $brand-dk-grey: #666568;
 $brand-md-white: #fafafa;
 $brand-true-white: #ffffff;
 $brand-red: #b32f2d;
-$brand-transparent: rgba(255, 255, 255, .25);
+$brand-transparent: rgba(255, 255, 255, 0.25);
 $space-4: rem(4px);
 $space-8: rem(8px);
 $space-12: rem(12px);
@@ -29,10 +29,8 @@ $space-48: rem(48px);
 $space-56: rem(56px);
 $space-64: rem(64px);
 // Fonts
-$header-font: "Gotham",
-sans-serif !important;
-$body-font: "YoungSerif",
-serif !important;
+$header-font: "Gotham", sans-serif !important;
+$body-font: "YoungSerif", serif !important;
 
 // Baseline media queries
 $mq-tablet-up: "(min-width: 768px)"; // pha-blet and up
@@ -51,35 +49,30 @@ $mq-mobile: "(max-width: 767px)"; // easy way to target phones
 $mq-mobile-l: "(max-width: 420px)"; // larger phones (iphone+, pixel2)
 $mq-mobile-s: "(max-width: 410px)"; // baby phones (iphone SE, s5)
 
-
 @mixin media($queries...) {
-
-    @each $query in $queries {
-
-        @media only screen and #{$query} {
-            @content;
-        }
-
+  @each $query in $queries {
+    @media only screen and #{$query} {
+      @content;
     }
-
+  }
 }
 
 @mixin font-header-bold {
-    font-family: $header-font;
-    font-weight: 800;
+  font-family: $header-font;
+  font-weight: 800;
 }
 
 @mixin font-header-reg {
-    font-family: $header-font !important;
-    font-weight: 500 !important;
+  font-family: $header-font !important;
+  font-weight: 500 !important;
 }
 
 @mixin font-body-bold {
-    font-family: $body-font !important;
-    font-weight: 800 !important;
+  font-family: $body-font !important;
+  font-weight: 800 !important;
 }
 
 @mixin font-body-reg {
-    font-family: $body-font !important;
-    font-weight: 400 !important;
+  font-family: $body-font !important;
+  font-weight: 400 !important;
 }

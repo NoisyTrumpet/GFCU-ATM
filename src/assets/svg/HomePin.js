@@ -1,4 +1,4 @@
-import * as React from "react"
+import * as React from "react";
 
 function HomePin(props) {
   return (
@@ -30,7 +30,7 @@ function HomePin(props) {
         </defs>
       </g>
     </svg>
-  )
+  );
 }
 
-export default HomePin
+export default HomePin;

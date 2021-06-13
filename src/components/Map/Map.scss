@@ -6,8 +6,12 @@
     place-items: center;
 
     h1 {
-        font-family: 'YoungSerif', serif !important;
-        background-image: linear-gradient(#fff, #fff, #fff, hsla(300, 2%, 89%, .6), #e3e2e3);
+        font-family: "YoungSerif", serif !important;
+        background-image: linear-gradient(#fff,
+                #fff,
+                #fff,
+                hsla(300, 2%, 89%, 0.6),
+                #e3e2e3);
         padding: 1px 5px;
         margin: 5px auto;
         color: $brand-dk-grey;
@@ -28,7 +32,7 @@
 }
 
 h3.instruction {
-    font-family: 'Gotham Book', sans-serif !important;
+    font-family: "Gotham Book", sans-serif !important;
 }
 
 select,
@@ -36,7 +40,7 @@ input,
 select::placeholder,
 input::placeholder {
     color: #9e9e9e;
-    font-family: 'Gotham Book', sans-serif !important;
+    font-family: "Gotham Book", sans-serif !important;
 }
 
 option:not(:first-of-type) {
@@ -45,14 +49,21 @@ option:not(:first-of-type) {
 
 .searched-for {
     text-align: center;
-    font-family: 'Gotham Book', sans-serif !important;
+    font-family: "Gotham Book", sans-serif !important;
+}
+
+.list-little-number {
+    position: absolute !important;
+    top: 11px !important;
+    left: 14px;
+    color: white;
 }
 
 .maps-wrapper {
     .form-wrapper {
         max-width: 900px;
         margin: 10px auto;
-        font-family: 'Gotham';
+        font-family: "Gotham";
         display: flex;
         flex-direction: column;
         padding: 0 10px;
@@ -64,17 +75,15 @@ option:not(:first-of-type) {
         input {
             width: 90%;
             border-radius: 5px;
-
         }
 
         select {
             width: 93%;
             border-radius: 5px;
-
         }
 
         span {
-            font-family: 'Gotham Book', sans-serif !important;
+            font-family: "Gotham Book", sans-serif !important;
         }
 
         input,
@@ -101,7 +110,7 @@ option:not(:first-of-type) {
             -webkit-appearance: none;
             border: 2px solid transparent;
             border-radius: 2px;
-            transition: background-color .25s ease-out, color .25s ease-out;
+            transition: background-color 0.25s ease-out, color 0.25s ease-out;
             line-height: 1;
             text-align: center;
             text-transform: uppercase;
@@ -118,19 +127,28 @@ option:not(:first-of-type) {
             }
         }
 
-        .checkboxes {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: 1fr;
-            gap: 0px 0px;
-            grid-template-areas:
-                ". .";
+        .inputField {
 
             input,
             select {
                 background-color: #eee;
                 border: 1px solid #eee;
-                font-family: 'Gotham Book', sans-serif !important;
+                font-family: "Gotham Book", sans-serif !important;
+            }
+        }
+
+        .checkboxes {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr;
+            gap: 0px 0px;
+            grid-template-areas: ". .";
+
+            input,
+            select {
+                background-color: #eee;
+                border: 1px solid #eee;
+                font-family: "Gotham Book", sans-serif !important;
             }
 
             @media (max-width: 500px) {
@@ -138,7 +156,7 @@ option:not(:first-of-type) {
             }
 
             .toggle-switch-label {
-                font-family: 'Gotham Book', sans-serif !important;
+                font-family: "Gotham Book", sans-serif !important;
             }
 
             div {
@@ -148,7 +166,7 @@ option:not(:first-of-type) {
 
                 label {
                     white-space: nowrap;
-                    font-family: 'Gotham Book' !important;
+                    font-family: "Gotham Book" !important;
                 }
             }
         }
@@ -166,14 +184,30 @@ option:not(:first-of-type) {
         }
     }
 
-    .info {
+    .little-number {
+        position: absolute;
+        top: 6px;
+        left: 9px;
 
-        .infoShow {
-            z-index: 999999999999999999999;
+        &.double {
+            left: 6px !important;
         }
 
-        &.hover {
+        color: white;
+        font-weight: 700;
+        font-size: 10px;
+    }
 
+    .infoShow {
+        z-index: 99999999999999999999999999999 !important;
+    }
+
+    .info {
+        // z-index: 99999999999999999999999999999;
+
+
+
+        &.hover {
             // .infoShow {
             //     display: block !important;
             //     z-index: 999999999999999999999;
@@ -181,15 +215,65 @@ option:not(:first-of-type) {
         }
     }
 
-    .pin,
-    .alt-pin {
-        z-index: 10 !important;
-    }
+    //   .pin,
+    //   .alt-pin {
+    //     z-index: 10 !important;
+    //   }
 
     .home-pin {
         width: 40px;
         height: 50px;
         animation: pinbounce 1.5s;
+    }
+
+    nav {
+        padding: 0 10px;
+    }
+
+    .pagination {
+        display: grid;
+        margin: 0 auto;
+        grid-template-columns: repeat(auto-fill, minmax(30px, 1fr));
+        /* see notes below */
+        grid-gap: 10px;
+        padding: 0 10px;
+
+        li {
+            display: flex !important;
+            justify-content: center;
+            align-items: center !important;
+            cursor: pointer !important;
+            border-radius: 0.4rem !important;
+            padding: 0 !important;
+            margin: 0 auto !important;
+            justify-content: center !important;
+            border: 3px solid lightgray !important;
+
+            button {
+                border: none !important;
+                background-color: transparent;
+                width: 100%;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                cursor: pointer !important;
+            }
+
+            &:hover {
+                background-color: $brand-green !important;
+
+                button {
+                    border: none !important;
+                    color: white !important;
+                }
+            }
+
+            &:active {
+                color: #ffffff !important;
+                background-color: $brand-green !important;
+                font-weight: 600 !important;
+                border: 1px solid $brand-green !important;
+            }
+        }
     }
 
     .results {
@@ -198,16 +282,13 @@ option:not(:first-of-type) {
 
         .legend {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: 1fr 1fr;
             grid-template-rows: 1fr;
             gap: 0px 0px;
-            grid-template-areas:
-                ". . .";
+            grid-template-areas: ". .";
 
             // text-align: left;
             // margin-left: 1rem;
-
-
 
             .search-center,
             .atm,
@@ -218,11 +299,10 @@ option:not(:first-of-type) {
 
                 svg {
                     width: 25px;
-                    padding: 5px;
                 }
 
                 p {
-                    font-family: 'Gotham Book', sans-serif;
+                    font-family: "Gotham Book", sans-serif;
 
                     @media (max-width: 500px) {
                         font-size: 14px;
@@ -234,7 +314,7 @@ option:not(:first-of-type) {
 
         ul {
             padding: 0 !important;
-            font-family: 'Gotham Book', sans-serif;
+            font-family: "Gotham Book", sans-serif;
             text-transform: capitalize !important;
 
             li {
@@ -252,13 +332,14 @@ option:not(:first-of-type) {
                     grid-template-columns: 1fr 1fr;
                     grid-template-rows: 1fr;
                     gap: 0px 0px;
-                    grid-template-areas:
-                        ". .";
+                    grid-template-areas: ". .";
 
                     .list-info {
                         margin-top: 5px;
 
                         .list-pin {
+                            position: relative;
+
                             svg {
                                 width: 20px !important;
                                 height: auto;
@@ -274,11 +355,13 @@ option:not(:first-of-type) {
                 .list-info {
                     display: flex;
                     align-items: center;
-                    font-family: 'Gotham Book', sans-serif !important;
+                    font-family: "Gotham Book", sans-serif !important;
                     margin-left: 20px;
                     text-transform: capitalize !important;
 
                     .list-pin {
+                        position: relative;
+
                         svg {
                             width: 30px;
                             height: auto;
@@ -286,17 +369,15 @@ option:not(:first-of-type) {
 
                             path {
                                 box-shadow: 0 1px 1px rgba(0, 0, 0, 0.12),
-                                    0 2px 2px rgba(0, 0, 0, 0.12),
-                                    0 4px 4px rgba(0, 0, 0, 0.12),
-                                    0 8px 8px rgba(0, 0, 0, 0.12),
-                                    0 16px 16px rgba(0, 0, 0, 0.12);
+                                    0 2px 2px rgba(0, 0, 0, 0.12), 0 4px 4px rgba(0, 0, 0, 0.12),
+                                    0 8px 8px rgba(0, 0, 0, 0.12), 0 16px 16px rgba(0, 0, 0, 0.12);
                             }
                         }
                     }
                 }
 
                 .text {
-                    font-family: 'Gotham Book', sans-serif;
+                    font-family: "Gotham Book", sans-serif;
 
                     h5 {
                         @media (max-width: 500px) {
@@ -326,104 +407,94 @@ option:not(:first-of-type) {
                         }
                     }
                 }
-
-
-
-
-
-
             }
         }
     }
 }
 
+// Animations for Pins:
+// @keyframes pinbounce {
+//   0% {
+//     top: -99px;
+//   }
 
+//   10% {
+//     top: 100px;
+//   }
 
-// Animations for Pins: 
+//   15% {
+//     top: 93px;
+//   }
 
-@keyframes pinbounce {
-    0% {
-        top: -99px;
-    }
+//   20% {
+//     top: 100px;
+//   }
 
-    10% {
-        top: 100px
-    }
+//   25% {
+//     top: 95px;
+//   }
 
-    15% {
-        top: 93px;
-    }
+//   30% {
+//     top: 100px;
+//   }
 
-    20% {
-        top: 100px;
-    }
+//   35% {
+//     top: 98px;
+//   }
 
-    25% {
-        top: 95px;
-    }
+//   40% {
+//     top: 100px;
+//   }
 
-    30% {
-        top: 100px;
-    }
+//   100% {
+//     top: 100px;
+//   }
+// }
 
-    35% {
-        top: 98px;
-    }
+// @keyframes pin-shadow {
+//   0% {
+//     width: 0.01em;
+//     margin-left: -0.005em;
+//     /*half of width.*/
+//   }
 
-    40% {
-        top: 100px;
-    }
+//   10% {
+//     width: 1.5em;
+//     margin-left: -0.75em;
+//   }
 
-    100% {
-        top: 100px;
-    }
-}
+//   15% {
+//     width: 1.1em;
+//     margin-left: -0.55em;
+//   }
 
+//   20% {
+//     width: 1.5em;
+//     margin-left: -0.75em;
+//   }
 
-@keyframes pin-shadow {
-    0% {
-        width: .01em;
-        margin-left: -.005em;
-        /*half of width.*/
-    }
+//   25% {
+//     width: 1.2em;
+//     margin-left: -0.6em;
+//   }
 
-    10% {
-        width: 1.5em;
-        margin-left: -.75em;
-    }
+//   30% {
+//     width: 1.5em;
+//     margin-left: -0.75em;
+//   }
 
-    15% {
-        width: 1.1em;
-        margin-left: -.55em;
-    }
+//   35% {
+//     width: 1.3em;
+//     margin-left: -0.65em;
+//   }
 
-    20% {
-        width: 1.5em;
-        margin-left: -.75em;
-    }
+//   40% {
+//     width: 1.5em;
+//     margin-left: -0.75em;
+//   }
 
-    25% {
-        width: 1.2em;
-        margin-left: -.6em;
-    }
-
-    30% {
-        width: 1.5em;
-        margin-left: -.75em;
-    }
-
-    35% {
-        width: 1.3em;
-        margin-left: -.65em;
-    }
-
-    40% {
-        width: 1.5em;
-        margin-left: -.75em;
-    }
-
-    100% {
-        width: 1.5em;
-        margin-left: -.75em;
-    }
-}
+//   100% {
+//     width: 1.5em;
+//     margin-left: -0.75em;
+//   }
+// }
