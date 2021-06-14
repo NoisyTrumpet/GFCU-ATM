@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import axios from "axios";
-import GoogleMapReact, {fitBounds} from "google-map-react";
+import GoogleMapReact from "google-map-react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import example from "../../constants/example.js";
@@ -16,6 +16,7 @@ import Marker from "../Marker/Marker.js";
 import Geocode from "react-geocode";
 import Pagination from "../Pagination/index.js";
 import { BiCurrentLocation } from "react-icons/bi";
+import { usePosition } from "../../constants/usePosition.js";
 
 const Map = ({ title, center, zoom }) => {
   const wrapperClasses = classNames("maps-wrapper");
@@ -24,8 +25,10 @@ const Map = ({ title, center, zoom }) => {
   const [response, setResponse] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [searchCenter, setCenter] = useState({ lat: 29.4241, lng: -98.4936 });
-  const [myLocation, setMyLocation] = useState({ lat: 29.4241, lng: -98.4936 });
-  const [myZip, setMyZip] = useState(78704);
+  const myLocation = {
+    lat: usePosition().latitude,
+    lng: usePosition().longitude,
+  };
   const [myAddress, setMyAddress] = useState({
     address: "",
     city: "",
@@ -43,31 +46,27 @@ const Map = ({ title, center, zoom }) => {
   // Change Page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  // Fit map to its bounds after the api is loaded
+  const apiIsLoaded = (map, maps, places) => {
+    // Get bounds by our places
+    mapFunction.push(map);
+  };
 
-// Fit map to its bounds after the api is loaded
-const apiIsLoaded = (map, maps, places) => {
-  // Get bounds by our places
-  mapFunction.push(map)
-};
+  // const handleChildClick = (place, map, maps, marker) => {
+  //   apiIsLoaded()
+  //   console.log(apiIsLoaded())
 
+  const mapFunction = [];
 
-// const handleChildClick = (place, map, maps, marker) => {
-//   apiIsLoaded()
-//   console.log(apiIsLoaded())
-
-const mapFunction = []
-
-
-
-// ES5 users
-const _onClick = (obj) => {
-  apiIsLoaded()
-  mapFunction[0].setCenter({lat:  parseFloat(obj.lat), lng:  parseFloat(obj.lng)})
-  mapFunction[0].setZoom(13)
-
-}
-
-
+  // ES5 users
+  const _onClick = (obj) => {
+    apiIsLoaded();
+    mapFunction[0].setCenter({
+      lat: parseFloat(obj.lat),
+      lng: parseFloat(obj.lng),
+    });
+    mapFunction[0].setZoom(15);
+  };
 
   const length = locations.length;
 
@@ -81,15 +80,13 @@ const _onClick = (obj) => {
         center={searchCenter}
         defaultZoom={zoom}
         onChildClick={(key, place) => {
-          _onClick(place)
+          _onClick(place);
         }}
         yesIWantToUseGoogleMapApiInternals
         onGoogleApiLoaded={({ map, maps }) => {
-          apiIsLoaded(map, maps, locations)
-
+          apiIsLoaded(map, maps, locations);
         }}
       >
-
         <Marker lat={searchCenter.lat} lng={searchCenter.lng} home>
           <Animated
             animationIn="fadeInDownBig"
@@ -140,48 +137,25 @@ const _onClick = (obj) => {
     );
   };
 
+  console.log(usePosition());
+
   const getCurrentLocation = async () => {
-    setSubmitting(true);
+    Geocode.setApiKey(process.env.REACT_APP_MAP_API);
 
-    const options = {
-      enableHighAccuracy: true,
-      timeout: 7000,
-      maximumAge: 0,
-    };
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(success, error, options);
-      function success(pos) {
-        var crd = pos.coords;
-        setMyLocation({
-          lat: crd.latitude,
-          lng: crd.longitude,
-        });
-        Geocode.fromLatLng(myLocation.lat, myLocation.lng).then(
-          (response) => {
-            if (response.status === "OK") {
-              setMyAddress({
-                address: `${response.results[0].address_components[0]?.long_name} ${response?.results[0]?.address_components[1]?.long_name}`,
-                city: response?.results[0]?.address_components[3]?.long_name,
-                state: response?.results[0]?.address_components[5]?.short_name,
-                zip: response?.results[0]?.address_components[7]?.long_name,
-              });
-            }
-
-            const request = `ZipCode=${myAddress?.zip}&city=${myAddress?.city}&state=${myAddress?.state}&address=${myAddress?.address}&locatortype=AS`;
-
-            getLocations(request);
-            setSubmitting(false);
-          },
-          (error) => {
-            console.log(error);
-            setSubmitting(false);
-          }
-        );
-      }
-
-      function error(err) {
-        console.warn(`ERROR(${err.code}): ${err.message}`);
-      }
+    if (myLocation.lat) {
+      Geocode.fromLatLng(myLocation.lat, myLocation.lng).then(
+        (response) => {
+          setMyAddress({
+            address: `${response.results[0].address_components[0]?.long_name} ${response?.results[0]?.address_components[1]?.long_name}`,
+            city: response?.results[0]?.address_components[3]?.long_name,
+            state: response?.results[0]?.address_components[5]?.short_name,
+            zip: response?.results[0]?.address_components[7]?.long_name,
+          });
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     }
   };
 
@@ -203,7 +177,6 @@ const _onClick = (obj) => {
     return axios
       .get(url, options)
       .then((response) => {
-
         setLocations(response.data.response.locations);
         setCenter({
           lat: parseFloat(response.data.response.resultInfo.originLat),
@@ -243,6 +216,10 @@ const _onClick = (obj) => {
       );
     }
   };
+
+  // React.useEffect(() => {
+
+  // }, [])
 
   const Form = () => {
     const handleOnSubmit = (event) => {
@@ -380,6 +357,8 @@ const _onClick = (obj) => {
               </label>
             </div>
           </section>
+          {console.log(myAddress)}
+
           <button type="submit" className="button">
             {submitting ? "Locating...🤔" : "Submit"}
           </button>
@@ -442,15 +421,22 @@ const _onClick = (obj) => {
             * Required
           </span>
         </p>
-        <p>Search by zip, full address, or current location</p>
-        <button
-          className="location-button"
-          onClick={() => {
-            getCurrentLocation();
-          }}
-        >
-          <BiCurrentLocation />
-        </button>
+        <p style={{ alignItems: `center` }}>
+          Search by zip, full address, or current location{" "}
+          <button
+            className="location-button"
+            onClick={() => {
+              getCurrentLocation();
+
+              if (myAddress.address) {
+                const request = `ZipCode=${myAddress?.zip}&city=${myAddress?.city}&state=${myAddress?.state}&address=${myAddress?.address}&locatortype=AS`;
+                getLocations(request);
+              }
+            }}
+          >
+            <BiCurrentLocation />
+          </button>
+        </p>
       </section>
       <section className="form">
         <Form />
