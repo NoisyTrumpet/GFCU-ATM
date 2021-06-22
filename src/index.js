@@ -4,9 +4,6 @@ import ReactDOM from "react-dom";
 import "./index.scss";
 import Map from "./components/Map/Map";
 import reportWebVitals from "./reportWebVitals";
-import Geocode from "react-geocode";
-
-import SA_CENTER from "./constants/sa_center";
 
 ReactDOM.render(
   <div className="atm-app">

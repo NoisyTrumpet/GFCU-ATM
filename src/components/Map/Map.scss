@@ -1,5 +1,32 @@
 @import "../../assets/styles/vriables.scss";
 
+.show-more-button {
+  display: block;
+  background-color: $brand-green;
+  color: #fff;
+  margin: 0 0 1rem;
+  font-family: "Gotham Book", sans-serif;
+  font-size: 14.4px;
+  font-weight: 800;
+  padding: 0.5rem 1rem;
+  -webkit-appearance: none;
+  border: 2px solid transparent;
+  border-radius: 2px;
+  transition: background-color 0.25s ease-out, color 0.25s ease-out;
+  line-height: 1;
+  text-align: center;
+  text-transform: uppercase;
+
+  &:hover {
+    background-color: transparent;
+    color: $brand-green;
+    border: 2px solid $brand-green;
+  }
+
+  margin: 0 auto 20px auto;
+  padding: 15px;
+}
+
 .location-button {
   display: inline-block;
   vertical-align: middle;
@@ -37,13 +64,11 @@
 
   h1 {
     font-family: "YoungSerif", serif !important;
-    background-image: linear-gradient(
-      #fff,
-      #fff,
-      #fff,
-      hsla(300, 2%, 89%, 0.6),
-      #e3e2e3
-    );
+    background-image: linear-gradient(#fff,
+        #fff,
+        #fff,
+        hsla(300, 2%, 89%, 0.6),
+        #e3e2e3);
     padding: 1px 5px;
     margin: 5px auto;
     color: $brand-dk-grey;
@@ -87,8 +112,25 @@ option:not(:first-of-type) {
 .list-little-number {
   position: absolute !important;
   top: 11px !important;
-  left: 14px;
+  left: 15px;
   color: white;
+  font-size: small;
+
+  @media (max-width: 500px) {
+    top: 5px !important;
+    left: 9px !important;
+    font-size: x-small;
+
+    &.double {
+      top: 5px !important;
+      left: 7px !important;
+    }
+  }
+
+  &.double {
+    top: 11px;
+    left: 10px;
+  }
 }
 
 .maps-wrapper {
@@ -160,6 +202,7 @@ option:not(:first-of-type) {
     }
 
     .inputField {
+
       input,
       select {
         background-color: #eee;

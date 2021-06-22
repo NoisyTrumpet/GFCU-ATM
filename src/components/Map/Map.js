@@ -14,9 +14,11 @@ import Skeleton from "react-loading-skeleton";
 import { Animated } from "react-animated-css";
 import Marker from "../Marker/Marker.js";
 import Geocode from "react-geocode";
-import Pagination from "../Pagination/index.js";
+
 import { BiCurrentLocation } from "react-icons/bi";
 import { usePosition } from "../../constants/usePosition.js";
+
+let arrayForHoldingPosts = [];
 
 const Map = ({ title, center, zoom }) => {
   const wrapperClasses = classNames("maps-wrapper");
@@ -35,16 +37,36 @@ const Map = ({ title, center, zoom }) => {
     state: "",
     zip: "",
   });
-  const [currentPage, setCurrentPage] = useState(1);
+  // const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(5);
-  const indexOfLastLocation = currentPage * postsPerPage;
-  const indexOfFirstLocation = indexOfLastLocation - postsPerPage;
-  const currentLocations = locations.slice(
-    indexOfFirstLocation,
-    indexOfLastLocation
-  );
-  // Change Page
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const [postsToShow, setPostsToShow] = useState([]);
+  const [next, setNext] = useState(5);
+
+  const loopWithSlice = (start, end) => {
+    const slicedPosts = locations.slice(start, end);
+    arrayForHoldingPosts = [...arrayForHoldingPosts, ...slicedPosts];
+    setPostsToShow(arrayForHoldingPosts);
+  };
+
+  React.useEffect(() => {
+    loopWithSlice(0, postsPerPage);
+  }, []);
+
+  const handleShowMorePosts = () => {
+    setNext(next + postsPerPage);
+    loopWithSlice(next, next + postsPerPage);
+
+  };
+
+  // const indexOfLastLocation = currentPage * postsPerPage;
+  // const indexOfFirstLocation = indexOfLastLocation - postsPerPage;
+  // const currentLocations = locations.slice(
+  //   indexOfFirstLocation,
+  //   indexOfLastLocation
+  // );
+  // // Change Page
+  // const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   // Fit map to its bounds after the api is loaded
   const apiIsLoaded = (map, maps, places) => {
@@ -80,6 +102,9 @@ const Map = ({ title, center, zoom }) => {
         center={searchCenter}
         defaultZoom={zoom}
         onChildClick={(key, place) => {
+          _onClick(place);
+        }}
+        onChildMouseDown={(key, place) => {
           _onClick(place);
         }}
         yesIWantToUseGoogleMapApiInternals
@@ -137,8 +162,6 @@ const Map = ({ title, center, zoom }) => {
     );
   };
 
-  console.log(usePosition());
-
   const getCurrentLocation = async () => {
     Geocode.setApiKey(process.env.REACT_APP_MAP_API);
 
@@ -177,7 +200,12 @@ const Map = ({ title, center, zoom }) => {
     return axios
       .get(url, options)
       .then((response) => {
+
         setLocations(response.data.response.locations);
+        // New Show More
+        arrayForHoldingPosts = [ ...response.data.response.locations.slice(0, 5)]
+        setPostsToShow(arrayForHoldingPosts)
+        // New Show More
         setCenter({
           lat: parseFloat(response.data.response.resultInfo.originLat),
           lng: parseFloat(response.data.response.resultInfo.originLong),
@@ -405,24 +433,9 @@ const Map = ({ title, center, zoom }) => {
             Dolphin Debit ATM Network
           </a>
           , giving our members access to more than 5,000 shared credit union
-          locations and nearly 30,000 ATMs nationwide.
-        </p>
-        <p>
-          <span
-            style={{
-              textAlign: "left",
-              fontFamily: "Gotham",
-              color: "red",
-              opacity: "0.3",
-              marginBottom: "10px",
-              fontSize: 10,
-            }}
-          >
-            * Required
-          </span>
+          locations and nearly 30,000 ATMs nationwide. Search by zip, full address, or current location
         </p>
         <p style={{ alignItems: `center` }}>
-          Search by zip, full address, or current location{" "}
           <button
             className="location-button"
             onClick={() => {
@@ -464,7 +477,7 @@ const Map = ({ title, center, zoom }) => {
 
         <ul>
           {submitting
-            ? currentLocations.map((key, index) => (
+            ? postsToShow.map((key, index) => (
                 <li key={key.index}>
                   <section className="list-info">
                     <section className="list-pin">
@@ -485,11 +498,11 @@ const Map = ({ title, center, zoom }) => {
                   </section>
                 </li>
               ))
-            : currentLocations.map((place, index, locations) => (
+            : postsToShow.map((place, index, locations) => (
                 <li>
                   <section className="list-info">
                     <section className="list-pin">
-                      <p className={`list-little-number`}>
+                      <p className={`list-little-number ${index >= 9 && `double`}`}>
                         {length - (length - index) + 1}
                       </p>
                       {place.locatorType === "A" ? (
@@ -541,11 +554,9 @@ const Map = ({ title, center, zoom }) => {
                 </li>
               ))}
         </ul>
-        <Pagination
-          postsPerPage={postsPerPage}
-          totalPosts={locations.length}
-          paginate={paginate}
-        />
+        <button className="show-more-button" onClick={handleShowMorePosts}>
+          Show More
+        </button>
       </section>
       <ToastContainer
         position="top-center"
